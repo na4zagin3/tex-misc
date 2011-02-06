@@ -1,0 +1,302 @@
+\usepackage[sc,slantedGreek]{mathpazo}
+\usepackage{cite} 
+\usepackage{listings}
+\usepackage{jlisting}
+\usepackage{mathtools} % Ams-TeXの使用
+\usepackage{mathrsfs} % 数式フォント
+%\usepackage{MnSymbol} % 記号
+\usepackage{amssymb,amsthm} % 記号と定理環境
+\usepackage{proof} % 証明図
+\usepackage{url} % URL
+\usepackage{longtable} % 複数ページに亙る長い表
+\usepackage{yhmath} % 長い括弧など
+%\usepackage{tablists}
+%\usepackage[mathx]{mathabx}
+\usepackage{stmaryrd}
+%\usepackage{showkeys} % デバッグ用
+
+% 定理類似環境:
+\newtheorem{theo}{定理}
+\newtheorem{defi}[theo]{定義}
+\newtheorem{lemm}[theo]{補題}
+\newtheorem{prop}[theo]{命題}
+\renewcommand{\proofname}{\bf 証明}
+\pagestyle{myheadings}
+
+% 人名
+\newcommand{\sakamoto}{酒本 典明}
+\newcommand{\kobori}{小堀 育男}
+
+% 見出し:
+\renewcommand{\lstlistlistingname}{プログラム一覧}
+\newsavebox{\articleauthor}
+\newcommand{\responsibility}[1]{\nopagebreak[4]\begin{flushright}[文責: #1]\end{flushright}}
+\newcommand{\defresponsible}[2]{\newenvironment{#1}[3][\relax]{%
+\ifx##1\relax#2[##2\quad(##3)]{##2}%
+\else#2[##1\quad(##3)]{##2}\fi%
+\sbox{\articleauthor}{##3}}%
+{\responsibility{\usebox{\articleauthor}}}}
+\defresponsible{resbonsiblechapter}{\chapter}
+\defresponsible{resbonsiblesection}{\section}
+
+% 略語:
+\newcommand{\algorithmW}{algorithm $\mathscr{W}$}
+\newcommand{\algorithmU}{algorithm $\mathscr{U}$}
+
+% 記号:
+\DeclareSymbolFont{symbolsC}{U}{txsyc}{m}{n}
+\DeclareMathSymbol{\strictif}{\mathrel}{symbolsC}{74}
+\DeclareMathSymbol{\boxright}{\mathrel}{symbolsC}{128}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\msubset}{\subseteq}
+\newcommand{\mnsubset}{\nsubseteq}
+\newcommand{\mpsubset}{\subset}
+\newcommand{\mnpsubset}{\nsubset}
+\newcommand{\msupset}{\supseteq}
+\newcommand{\mnsupset}{\nsupseteq}
+\newcommand{\mpsupset}{\supset}
+\newcommand{\mnpsupset}{\nsupset}
+\newcommand{\limpl}{\supset}
+\newcommand{\gtrdotrel}{\mathrel{\gtrdot}}
+\newcommand{\Rrel}{\mathrel{R}}
+\newcommand{\curlyveeord}{\mathord{\curlyvee}}
+\newcommand{\curlywedgeord}{\mathord{\curlywedge}}
+
+\newcommand{\powerset}{\mathfrak{P}}
+\newcommand{\domain}{\mathop{\mathfrak{Dom}}}
+\newcommand{\codomain}{\mathop{\mathfrak{Cod}}}
+
+\newcommand{\mathnkop}[1]{\mathop{\mathsf{#1}}}
+\newcommand{\mathnkenv}[1]{\mathcal{#1}}
+\newcommand{\mathnkval}[1]{\mathsf{#1}}
+\newcommand{\mathnkvariant}[1]{\mathsf{#1}}
+\newcommand{\mathset}[1]{\mathit{#1}}
+\newcommand{\mathfunc}[1]{\mathit{#1}}
+\newcommand{\newmonadicopdot}[2]{\newcommand{#1}[2]{#2##1.\,##2}}
+\newmonadicopdot{\foralldot}{\forall}
+\newmonadicopdot{\existsdot}{\exists}
+\newmonadicopdot{\lambdadot}{\lambda}
+\newcommand{\fixdot}[2]{\mathnkop{fix}#1\;#2}
+\newcommand{\fundot}[2]{\mathnkop{fun}#1\rightarrow#2}
+\newcommand{\semanticS}[1]{\mathcal{S}\left\llbracket#1\right\rrbracket}
+\newcommand{\semanticM}[1]{\mathcal{M}\left\llbracket#1\right\rrbracket}
+\newcommand{\semanticA}[1]{\mathcal{A}\left\llbracket#1\right\rrbracket}
+\newcommand{\mypair}[2]{\left(#1,#2\right)}
+
+\newcommand{\lambdaIf}{\mathop{\mathrm{if}}}
+\newcommand{\lambdaThen}{\mathop{\mathrm{then}}}
+\newcommand{\lambdaElse}{\mathop{\mathrm{else}}}
+\newcommand{\lambdaLet}{\mathop{\mathrm{let}}}
+\newcommand{\lambdaIn}{\mathop{\mathrm{in}}}
+
+\newcommand{\semanticSVal}{\mathop{\pi_\mathrm{val}}}
+\newcommand{\semanticSVEnv}{\mathop{\pi_\rho}}
+
+\newcommand{\ltrue}{\top}
+\newcommand{\lfalse}{\bot}
+\newcommand{\defeq}{\triangleq} % 定義時に使う等号
+
+\newcommand{\envExpr}{\mathnkenv{E}}
+\newcommand{\envType}{\mathnkenv{T}}
+\newcommand{\envVariant}{\mathnkenv{V}}
+\newcommand{\envPattern}{{\mathnkenv{E}_p}}
+\newcommand{\substExpr}{{\Sigma_\mathnkenv{E}}}
+\newcommand{\substType}{{\Sigma_\mathnkenv{T}}}
+\newcommand{\substVariant}{{\Sigma_\mathnkenv{V}}}
+\newcommand{\applysubst}[2]{\mathfrak{S}\ #1\ #2}
+\newcommand{\removeassoc}[2]{\mathfrak{Rm}\ #1\ #2}
+\newcommand{\patternandenv}[2]{#1\Rsh#2}
+\newcommand{\valueandenv}[2]{\mypair{#1}{#2}}
+\newcommand{\domainrestrict}[2]{#1\mathbin{\upharpoonright}#2}
+\newcommand{\freevars}[1]{\mathit{FV}(#1)}
+\newcommand{\freetypevars}[1]{\mathit{FTV}(#1)}
+\newcommand{\boundvars}[1]{\mathit{BV}(#1)}
+\newcommand{\clauseor}{\mathbin{|}}
+\newcommand{\patternor}{\mathbin{|}}
+\newcommand{\patternand}{\mathbin{@}}
+\newcommand{\patternany}{\,\underline{\hspace{0.7em}}\,}
+
+% 日本語特有の記号
+\newcommand{\jpdash}{―\nobreak\hspace{-0.5zw}\nobreak―\nobreak\hspace{-0.5zw}\nobreak―}
+
+\newcommand{\rulename}[1]{\text{\bfseries\scshape #1}}
+\newcommand{\typename}[1]{\text{\sffamily\bfseries #1}}
+\newcommand{\widevec}[1]{\overrightarrow{#1}}
+\newcommand{\varrange}[1]{\boldsymbol{\widetilde{#1}}} %\widetriangle \widering \wideparen \widetilde \widehat のいづれかが良いと思う
+\newcommand{\refEq}[1]{式(\ref{#1})}
+\newcommand{\refTbl}[1]{表\ref{#1}}
+\newcommand{\refFig}[1]{図\ref{#1}}
+\newcommand{\refCh}[1]{第\ref{#1}章}
+\newcommand{\refSc}[1]{第\ref{#1}節}
+\newcommand{\refSsc}[1]{第\ref{#1}項}
+\newcommand{\refSssc}[1]{第\ref{#1}目}
+
+% 罫線に太線を追加
+\makeatletter
+\def\@arrayrule{\@addtopreamble{%
+\vrule \@width \arrayrulewidth}}
+\def\Hline{\noalign{\hrule height 3\arrayrulewidth}}
+%\def\LTHline{\noalign{\hrule height 3\arrayrulewidth}}
+\def\Vline{\vrule width 3\arrayrulewidth}
+%\def\LTHline{\LT@Hline}
+\def\LT@Hline{%
+  \noalign{\ifnum0=`}\fi
+    \penalty\@M
+    \futurelet\@let@token\LT@@Hline}
+\def\LT@@Hline{%
+  \ifx\@let@token\Hline
+    \global\let\@gtempa\@gobble
+    \gdef\LT@sep{\penalty-\@medpenalty\vskip\doublerulesep}%
+  \else
+    \global\let\@gtempa\@empty
+    \gdef\LT@sep{\penalty-\@lowpenalty\vskip-\arrayrulewidth}%
+  \fi
+  \ifnum0=`{\fi}%
+  \multispan\LT@cols
+     \unskip\leaders\hrule\@height3\arrayrulewidth\hfill\cr
+  \noalign{\LT@sep}%
+  \multispan\LT@cols
+     \unskip\leaders\hrule\@height3\arrayrulewidth\hfill\cr
+  \noalign{\penalty\@M}%
+  \@gtempa}
+\def\LT@makecaption#1#2#3{%
+  \LT@mcol\LT@cols c{\hbox to\z@%
+  {\hss\parbox[t]\LTcapwidth{%
+    \sbox\@tempboxa{#1{#2\hskip1zw\relax}#3}%
+    \ifdim\wd\@tempboxa>\hsize
+      #1{#2\hskip1zw\relax}#3%
+    \else%
+      \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+    \fi%
+    \endgraf\vskip\baselineskip}%
+  \hss}}}%
+\def\LT@array[#1]#2{%
+  \refstepcounter{table}\stepcounter{LT@tables}%
+  \if l#1%
+    \LTleft\z@ \LTright\fill
+  \else\if r#1%
+    \LTleft\fill \LTright\z@
+  \else\if c#1%
+    \LTleft\fill \LTright\fill
+  \fi\fi\fi
+  \let\LT@mcol\multicolumn
+  \let\LT@@tabarray\@tabarray
+  \let\LT@@hl\hline
+  \def\@tabarray{%
+    \let\hline\LT@@hl
+    \LT@@tabarray}%
+  \let\\\LT@tabularcr\let\tabularnewline\\%
+  \def\newpage{\noalign{\break}}%
+  \def\pagebreak{\noalign{\ifnum`}=0\fi\@testopt{\LT@no@pgbk-}4}%
+  \def\nopagebreak{\noalign{\ifnum`}=0\fi\@testopt\LT@no@pgbk4}%
+  \let\hline\LT@hline \let\kill\LT@kill\let\caption\LT@caption
+  \let\Hline\LT@Hline
+% \@tempdima\ht\strutbox%                                       変更1
+  \iftdir\@tempdima\ht\tstrutbox\else\@tempdima\ht\strutbox\fi%  <-
+  \let\@endpbox\LT@endpbox
+  \ifx\extrarowheight\@undefined
+    \let\@acol\@tabacol
+    \let\@classz\@tabclassz \let\@classiv\@tabclassiv
+    \def\@startpbox{\vtop\LT@startpbox}%
+    \let\@@startpbox\@startpbox
+    \let\@@endpbox\@endpbox
+    \let\LT@LL@FM@cr\@tabularcr
+  \else
+    \advance\@tempdima\extrarowheight
+    \col@sep\tabcolsep
+    \let\@startpbox\LT@startpbox\let\LT@LL@FM@cr\@arraycr
+  \fi
+  \setbox\@arstrutbox\hbox{\vrule
+    \@height \arraystretch \@tempdima
+%   \@depth \arraystretch \dp \strutbox%          変更2
+    \iftdir\@depth \arraystretch \dp \tstrutbox%   <-
+    \else\@depth \arraystretch \dp \strutbox\fi%   <-
+    \@width \z@}%
+  \let\@sharp##\let\protect\relax
+   \begingroup
+    \@mkpream{#2}%
+    \xdef\LT@bchunk{%
+       \global\advance\c@LT@chunks\@ne
+       \global\LT@rows\z@\setbox\z@\vbox\bgroup
+       \LT@setprevdepth
+       \tabskip\LTleft \noexpand\halign to\hsize\bgroup
+      \tabskip\z@ \@arstrut \@preamble \tabskip\LTright \cr}%
+  \endgroup
+  \expandafter\LT@nofcols\LT@bchunk&\LT@nofcols
+  \LT@make@row
+% \m@th\let\par\@empty%                               変更3
+  \iftdir\m@th\let\par\@@par%                          <-
+  \else\m@th\let\par\@empty\fi%                        <-
+  \everycr{}\lineskip\z@\baselineskip\z@
+  \LT@bchunk}
+
+\makeatother
+
+% listings用設定
+\lstdefinelanguage{nibkame}{%
+   morekeywords={%
+        let,letrec,in,if,match,with,type,fun,+,-,*,/,+.,-.,*.,\.,(),~-,;,
+        and,or,not,unit,Nil%
+   },%
+%   morekeywords={%
+%        ignore
+%   },%
+%   morekeywords={%
+%        print_int,print_float,print_char,print_string
+%   },%
+%   morekeywords={%
+%        hd,tl,null,map,length
+%   },%
+%   morekeywords={%
+%        array-create,array-set,array-ref,array-from-list,array-from-list-with-length
+%   },%
+   sensitive,% ???
+   alsodigit=->,%
+   morecomment=[l];,%
+   morecomment=[s]{\#|}{|\#},%
+   morestring=[b]",%"
+   literate=%
+       {[|}{[\hskip -1pt$|$}2%
+       {|]}{$|$\hskip -1pt]}2%
+%      {[]}{\ensuremath{[\hskip -0.1em]}}2%
+       {->}{\ensuremath{\rightarrow}~}2%
+       {::}{\ensuremath{:\hskip -0.1em:}~}2%
+}[keywords,comments,strings]
+
+\lstdefinelanguage[Objective display]{Caml}[Objective]{Caml}{%
+    morestring=[d]',%'
+%    classoffset=2,
+%    morekeywords={int,float,char,string},keywordstyle=\color{red},
+%    classoffset=3,
+%    morekeywords={list,array},keywordstyle=\color{blue},
+%    classoffset=0,
+    literate=%
+        {[|}{[\hskip -1pt$|$}2%
+        {|]}{$|$\hskip -1pt]}2%
+%       {[]}{\ensuremath{[\hskip -0.1em]}}2%
+        {->}{\ensuremath{\rightarrow}~}2%
+        {::}{\ensuremath{:\hskip -0.1em:}~}2%
+}
+\lstset{%
+  %language=[Objective display]Caml,%
+  language=nibkame,%
+  basicstyle={\normalfont\normalsize\sffamily},%
+  commentstyle={\small\ttfamily\itshape\bfseries\upshape},%
+  classoffset=1,%
+  keywordstyle={\bfseries},%
+  %frame=,%
+  %framesep=0pt,%
+  showstringspaces=false,%
+  %numbers=left,%
+  %numberstyle={\scriptsize},%
+  %stepnumber=1,%
+  tabsize=8,%
+  lineskip=-0.5ex,%
+%
+  breaklines=true,%
+  linewidth=\the\textwidth,
+%  columns=[l]flexible%
+  columns=flexible%
+}
